@@ -6,6 +6,11 @@ var curTime=null;
 var t = 25;
 var b = 5;
 
+
+const sound = document.createElement('audio');
+sound.setAttribute("src", "https://www.soundjay.com/misc/sounds/bell-ringing-05.mp3");
+
+
 window.onload = function(){
 
   document.getElementById("pomo").addEventListener("click", function(){go(pomo);});
@@ -79,9 +84,10 @@ function myTimer(){
   var min=parseInt(timer/60);
   var sec = timer%60;
   if(timer==-1){
-    document.getElementById("timer").innerHTML = "tomato time";
+    document.getElementById("timer").innerHTML = "Time is up!";
     document.getElementById("head").innerHTML = "Time is up!";
     clearInterval(curTime);
+    sound.play();
     alert("Time is up!!")
   }
   else{
@@ -107,3 +113,4 @@ function updateTime(sec, min, id){
 
 
 }
+
