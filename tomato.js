@@ -1,10 +1,10 @@
-var pomo=1500;
-var short= 300;
-var long = 600;
+const pomodoro=25;
+const shortBreak=5;
+const longBreak = 10;
 var timer = 0;
-var curTime=null;
-var t = 25;
-var b = 5;
+var currentTime=null;
+var workTime= 25;
+var breakTime= 5;
 
 
 const sound = document.createElement('audio');
@@ -13,69 +13,56 @@ sound.setAttribute("src", "https://www.soundjay.com/misc/sounds/bell-ringing-05.
 
 window.onload = function(){
 
-  document.getElementById("pomo").addEventListener("click", function(){go(pomo);});
-  document.getElementById("sb").addEventListener("click",function(){go(short);});
-  document.getElementById("lb").addEventListener("click", function(){go(long);});
-  document.getElementById("addPomo").addEventListener("click",function(){alterPomo(1);});
-  document.getElementById("subtractPomo").addEventListener("click", function(){alterPomo(-1);});
-  document.getElementById("addBreak").addEventListener("click",function(){alterBreak(1);});
-  document.getElementById("subtractBreak").addEventListener("click", function(){alterBreak(-1);});
+  document.getElementById("pomo").addEventListener("click", function(){go(pomodoro);});
+  document.getElementById("sb").addEventListener("click",function(){go(shortBreak);});
+  document.getElementById("lb").addEventListener("click", function(){go(longBreak);});
+  document.getElementById("addPomo").addEventListener("click",function(){alterTime(1, "pomoTime");});
+  document.getElementById("subtractPomo").addEventListener("click", function(){alterTime(-1, "pomoTime");});
+  document.getElementById("addBreak").addEventListener("click",function(){alterTime(1, "breakTime");});
+  document.getElementById("subtractBreak").addEventListener("click", function(){alterTime(-1, "breakTime");});
 
-  document.getElementById("usePomo").addEventListener("click",function(){go(t*60);});
-  document.getElementById("useBreak").addEventListener("click", function(){go(b*60);});
+  document.getElementById("usePomo").addEventListener("click",function(){go(workTime);});
+  document.getElementById("useBreak").addEventListener("click", function(){go(breakTime);});
 };
 
-function startPomo(time){
-  timer=time;
 
+function alterTime(num, element){
+ if(element=="pomoTime"){
+     workTime=workTime+num;
+  if(workTime>=0){
+    document.getElementById(element).innerHTML = workTime;
+  }
+  else if (workTime<0) {
+    workTime=0;  
 }
-function alterPomo(num){
-  t=t+num;
-  if(t>=0){
-    document.getElementById("pomoTime").innerHTML = t;
-  }
-  else if (t<0) {
-    t=0;
-  }
-
 }
 
-function alterBreak(num){
-  b=b+num;
-  if(b>=0){
-    document.getElementById("breakTime").innerHTML = b;
+else{ 
+    breakTime=breakTime+num;
+ if(breakTime>=0){
+    document.getElementById(element).innerHTML = breakTime;
   }
-  else if (b<0) {
-    b=0;
+  else if (breakTime<0) {
+    breakTime=0;
   }
 }
+}
+
 
 
 
 function go(time){
-  if(curTime != null){
-    clearInterval(curTime);
-    curTime=null;
+
+time=time*60;                    //From minutes to seconds
+
+  if(currentTime != null){
+    clearInterval(currentTime);
+    currentTime=null;
   }
-    if (time==pomo){
-      curTime=setInterval(myTimer, 1000);
-      timer=pomo;
-
-    }
-    else if (time==short) {
-      curTime=setInterval(myTimer, 1000);
-      timer=short;
-
-    }
-    else if (time==long) {
-      curTime = setInterval(myTimer, 1000);
-      timer=long;
-
-    }
-    else{
-      curTime= setInterval(myTimer, 1000);
+  if(time !=0){ 
+      currentTime= setInterval(myTimer, 1000);
       timer=time;
-    }
+}   
 }
 
 
@@ -83,12 +70,11 @@ function myTimer(){
   timer--;
   var min=parseInt(timer/60);
   var sec = timer%60;
-  if(timer==-1){
+  if(timer==0){
     document.getElementById("timer").innerHTML = "Time is up!";
     document.getElementById("head").innerHTML = "Time is up!";
-    clearInterval(curTime);
+    clearInterval(currentTime);
     sound.play();
-    alert("Time is up!!")
   }
   else{
     updateTime(sec, min, "timer");
