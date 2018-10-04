@@ -77,24 +77,27 @@ function myTimer(){
     sound.play();
   }
   else{
-    updateTime(sec, min, "timer");
-    updateTime(sec, min, "head");
+    updateElement("timer", formatTime(sec, min));
+    updateElement("head", formatTime(sec, min));
   }
 
 }
 
-function updateTime(sec, min, id){
+function updateElement(id, string){
+    document.getElementById(id).innerHTML = string;
+}
+function formatTime(sec, min){
   if(sec<10 && min<10){
-    document.getElementById(id).innerHTML = "0"+min +" : 0" + sec;
+    return ( "0"+min +" : 0" + sec);
   }
   else if(min<10){
-    document.getElementById(id).innerHTML = "0" +min +" : " + sec;
+    return ( "0" +min +" : " + sec);
   }
   else if(sec<10){
-    document.getElementById(id).innerHTML = min +" : 0" + sec;
+    return ( min +" : 0" + sec);
   }
   else{
-    document.getElementById(id).innerHTML = min +" : " + sec;
+    return( min +" : " + sec);
   }
 
 
