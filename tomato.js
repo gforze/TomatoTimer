@@ -30,7 +30,7 @@ function alterTime(num, element){
  if(element=="pomoTime"){
      workTime=workTime+num;
   if(workTime>=0){
-    document.getElementById(element).innerHTML = workTime;
+    updateElement(element, workTime);
   }
   else if (workTime<0) {
     workTime=0;  
@@ -40,7 +40,7 @@ function alterTime(num, element){
 else{ 
     breakTime=breakTime+num;
  if(breakTime>=0){
-    document.getElementById(element).innerHTML = breakTime;
+    updateElement(element, breakTime);
   }
   else if (breakTime<0) {
     breakTime=0;
@@ -68,17 +68,17 @@ time=time*60;                    //From minutes to seconds
 
 function myTimer(){
   timer--;
-  var min=parseInt(timer/60);
-  var sec = timer%60;
+  
   if(timer==0){
-    document.getElementById("timer").innerHTML = "Time is up!";
-    document.getElementById("head").innerHTML = "Time is up!";
+    updateElement("timer", "Time is up!");
+    updateElement("head", "Time is up!");
     clearInterval(currentTime);
     sound.play();
   }
   else{
-    updateElement("timer", formatTime(sec, min));
-    updateElement("head", formatTime(sec, min));
+    let string=formatTime(timer);
+    updateElement("timer", string);
+    updateElement("head",  string);
   }
 
 }
@@ -86,7 +86,10 @@ function myTimer(){
 function updateElement(id, string){
     document.getElementById(id).innerHTML = string;
 }
-function formatTime(sec, min){
+function formatTime(timer){
+  let min=parseInt(timer/60);
+  let sec = timer%60;
+  
   if(sec<10 && min<10){
     return ( "0"+min +" : 0" + sec);
   }
