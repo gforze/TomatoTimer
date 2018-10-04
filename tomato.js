@@ -5,7 +5,8 @@ var timer = 0;
 var currentTime=null;
 var workTime= 25;
 var breakTime= 5;
-
+var startTime=null;
+var endTime = null;
 
 const sound = document.createElement('audio');
 sound.setAttribute("src", "https://www.soundjay.com/misc/sounds/bell-ringing-05.mp3");
@@ -52,8 +53,9 @@ else{
 
 
 function go(time){
-
-time=time*60;                    //From minutes to seconds
+startTime=Math.floor(Date.now()/1000);
+time=time*60;
+endTime=startTime+time;
 
   if(currentTime != null){
     clearInterval(currentTime);
@@ -65,21 +67,29 @@ time=time*60;                    //From minutes to seconds
 }   
 }
 
-
-function myTimer(){
-  timer--;
-  
-  if(timer==0){
+function end(){
     updateElement("timer", "Time is up!");
     updateElement("head", "Time is up!");
     clearInterval(currentTime);
     sound.play();
+}
+
+function myTimer(){
+
+ let curTime = Math.floor(Date.now()/1000);
+    timer=endTime-curTime;
+
+  if(timer==0 || endTime==curTime){
+        end();
   }
+  else if(timer<0){
+        end();
+    }
   else{
-    let string=formatTime(timer);
-    updateElement("timer", string);
-    updateElement("head",  string);
-  }
+        let string=formatTime(timer);
+        updateElement("timer", string);
+        updateElement("head",  string);
+    }
 
 }
 
